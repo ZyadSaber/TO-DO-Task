@@ -1,23 +1,16 @@
 import {memo, useEffect, useState, useCallback} from 'react';
-import Column from './components/Column'
-import './App.css'
+import Column from './components/Column';
+import './App.css';
+import {cardType, inputTextType} from './components/Interface'
 
-interface  listDataType {
-  ID: number;
-  title: string;
-  body: string;
-  date: number;
-  columnType: string;
-  personName: string;
-}
-interface txtType {target:{value: string}}
+
 
 function App() {
 
 const [search, setSearch] = useState<string>("")
-const [listData, setListData] = useState<listDataType[]>([]);
+const [listData, setListData] = useState<cardType[]>([]);
 const [localStorageSaveCHK, setLocalStorageSaveCHK] = useState<boolean>(false);
-  const handleSearch = useCallback((event: txtType) => {
+  const handleSearch = useCallback((event: inputTextType) => {
     setSearch(event.target.value);
   }, [setSearch]);
 

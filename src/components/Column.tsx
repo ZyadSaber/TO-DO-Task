@@ -1,28 +1,21 @@
 import { memo, useState, useCallback} from "react";
-import AddCard from './AddCard'
-import EditCard from './EditCard'
+import AddCard from './AddCard';
+import EditCard from './EditCard';
+import { cardType } from './Interface';
 
-interface card {
-  ID: number;
-  title: string;
-  body: string;
-  date: number;
-  columnType: string;
-  personName: string;
-}
 interface  ColumnsPropsType {
-  listData: card[];
+  listData: cardType[];
   filter: string;
   search: string;
   setLocalStorageSaveCHK: (value: boolean | ((preVal: boolean) => boolean)) => void;
-  setListData: (key: card[]) => void;
+  setListData: (key: cardType[]) => void;
 }
 
 const Column = ({listData, filter, search, setListData, setLocalStorageSaveCHK}: ColumnsPropsType) => {
 
     const [add, setAdd] = useState<boolean>(false)
     const [edit, setEdit] = useState<boolean>(false)
-    const [card, setCard] = useState<card>(
+    const [card, setCard] = useState<cardType>(
     {
     ID: 0,
     title: "",
@@ -31,8 +24,8 @@ const Column = ({listData, filter, search, setListData, setLocalStorageSaveCHK}:
     columnType: "Default",
     personName: "",
   });
-  const onUpdateCards = (updatedCard:card) => {
-    const updatedCards:card[] = listData.map((card:card) => {
+  const onUpdateCards = (updatedCard:cardType) => {
+    const updatedCards:cardType[] = listData.map((card:cardType) => {
           if (card.ID === updatedCard.ID)return updatedCard;
           return card;
         });
@@ -43,22 +36,22 @@ const Column = ({listData, filter, search, setListData, setLocalStorageSaveCHK}:
            setLocalStorageSaveCHK(true)
           }, [listData, setListData, setLocalStorageSaveCHK]);
 
-        const handleEdit = useCallback((item: card)=>()=>{
+        const handleEdit = useCallback((item: cardType)=>()=>{
           setEdit(true);
           setCard(item);
         },[]);
 
-        const onAddCard = (newCard: card) => {
+        const onAddCard = (newCard: cardType) => {
           setListData([...listData, newCard])
         }
         
-        const addButton = useCallback(()=>() => {setAdd(true)},[]);
+        const addButton = useCallback(() => {setAdd(true)},[]);
 
     return (
         <div className="column">
             <div className="column_head">
                 <h3>{filter}</h3>
-                <button onClick={addButton()}>Add</button>
+                <button onClick={addButton}>Add</button>
             </div>
             {add && <AddCard filter={filter} onAddCard={onAddCard} listData={listData} setAdd={setAdd}  setLocalStorageSaveCHK={setLocalStorageSaveCHK}/>}
             {edit && <EditCard card={card} onUpdateCards={onUpdateCards} setEdit={setEdit}  setLocalStorageSaveCHK={setLocalStorageSaveCHK}/>}

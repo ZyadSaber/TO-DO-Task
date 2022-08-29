@@ -1,19 +1,12 @@
 import {memo, useCallback, useState} from 'react';
+import {inputTextType, formButtonType, cardType} from './Interface'
 
-interface  EditCardType {
-    card: {ID: number; title: string; body: string; date: number; columnType: string; personName: string;};
-    onUpdateCards: (obj: {
-    ID: number;
-    title: string;
-    body: string;
-    date: number;
-    columnType: string;
-    personName: string;
-  }) => void;
-  setEdit: (value: boolean | ((preVal: boolean) => boolean)) => void;
-  setLocalStorageSaveCHK: (value: boolean | ((preVal: boolean) => boolean)) => void;
-}
-interface txtType {target:{value: string}}
+ interface  EditCardType {
+    card: cardType;
+    onUpdateCards: (obj: cardType) => void;
+    setEdit:   (value: boolean | ((preVal: boolean) => boolean)) => void;
+    setLocalStorageSaveCHK: (value: boolean | ((preVal: boolean) => boolean)) => void;
+};
 
 const EditCard = ({card,  onUpdateCards, setEdit, setLocalStorageSaveCHK}:EditCardType) => {
     const [editCard, setEditCard] = useState({
@@ -24,21 +17,22 @@ const EditCard = ({card,  onUpdateCards, setEdit, setLocalStorageSaveCHK}:EditCa
            "columnType": card.columnType,
            "personName": card.personName,
        });
-    const changeTitle =useCallback((event:txtType) => {setEditCard({...editCard, "title":event.target.value})},[editCard]);
-    const changeBody = useCallback((event: txtType) => {setEditCard({...editCard, "body": event.target.value})},[editCard]);
-    const changePersonName = useCallback((event: txtType) => {setEditCard({...editCard, "personName": event.target.value})},[editCard]);
-    const changeColumnType = useCallback((event: txtType) => {setEditCard({...editCard, "columnType": event.target.value})},[editCard]);
+
+    const changeTitle =useCallback((event:inputTextType) => {setEditCard({...editCard, "title":event.target.value})},[editCard]);
+    const changeBody = useCallback((event: inputTextType) => {setEditCard({...editCard, "body": event.target.value})},[editCard]);
+    const changePersonName = useCallback((event: inputTextType) => {setEditCard({...editCard, "personName": event.target.value})},[editCard]);
+    const changeColumnType = useCallback((event: inputTextType) => {setEditCard({...editCard, "columnType": event.target.value})},[editCard]);
 
 
 
-     const postData=useCallback((btn: { preventDefault: () => void; })=>{
+     const postData=useCallback((btn: formButtonType)=>{
         btn.preventDefault();
         setLocalStorageSaveCHK(true);
         setEdit(false);
         onUpdateCards(editCard);
     },[editCard, onUpdateCards, setEdit, setLocalStorageSaveCHK]);
 
-    const close = useCallback(() => () => {setEdit(false)}, [setEdit]);
+    const closeWindow = useCallback(() => {setEdit(false)}, [setEdit]);
 
     return (
         <div className="create">
@@ -74,7 +68,7 @@ const EditCard = ({card,  onUpdateCards, setEdit, setLocalStorageSaveCHK}:EditCa
                 </select>
                 <button>Update Task</button>
             </form>
-            <button onClick={close()}>Cancel</button>
+            <button onClick={closeWindow}>Cancel</button>
         </div>
     )
 }
