@@ -12,3 +12,10 @@ export interface inputTextType {
 export interface formButtonType {
     preventDefault: () => void; 
 };
+export type booleanFunctionType = (value: boolean) => void
+export interface ColumnsType {
+  listData: cardType[];
+  search: string;
+  setLocalStorageSaveCHK: booleanFunctionType
+  setListData: (key: cardType[]) => void;
+}
